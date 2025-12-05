@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decathlon | Santé Posturale 3.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
+    <style>
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff00ff;
+            --neon-green: #00ff9d;
+            --dark-bg: #0a0a1a;
+            --card-bg: rgba(20, 20, 40, 0.8);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--dark-bg);
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+        
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--neon-blue);
+            opacity: 0.3;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-100px) rotate(180deg); }
+        }
+        
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-top: 80px;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .glitch-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            position: relative;
+            color: white;
+            text-shadow: 
+                0.05em 0 0 var(--neon-blue),
+                -0.05em -0.05em 0 var(--neon-pink),
+                0.025em 0.05em 0 var(--neon-green);
+            animation: glitch 5s infinite;
+        }
+        
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); }
+            1% { transform: translate(-2px, 2px); }
+            2% { transform: translate(2px, -2px); }
+            3% { transform: translate(-2px, -2px); }
+            4% { transform: translate(2px, 2px); }
+            5% { transform: translate(0); }
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 600px;
+        }
+        
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            padding: 18px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: white;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
+            border-radius: 50px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .cta-button:hover::before {
+            left: 100%;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 243, 255, 0.3);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 100px;
+            padding: 0 20px;
+        }
+        
+        .feature-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--neon-blue);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .feature-number {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 4rem;
+            font-weight: 800;
+            opacity: 0.1;
+        }
+        
+        .sports-showcase {
+            margin-top: 100px;
+            padding: 50px 20px;
+        }
+        
+        .sports-slider {
+            display: flex;
+            gap: 30px;
+            overflow-x: auto;
+            padding: 20px 0;
+            scroll-snap-type: x mandatory;
+        }
+        
+        .sport-card {
+            flex: 0 0 300px;
+            height: 400px;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            scroll-snap-align: start;
+        }
+        
+        .sport-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .sport-card:hover img {
+            transform: scale(1.1);
+        }
+        
+        .sport-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 30px;
+            color: white;
+        }
+        
+        .nav-3d {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+        
+        .nav-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 10px;
+        }
+        
+        .nav-button:hover {
+            background: var(--neon-blue);
+            transform: rotate(45deg);
+        }
+        
+        .live-stats {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+        
+        .stat-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-value {
+            font-weight: 600;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .typing-text {
+            display: inline-block;
+            border-right: 3px solid var(--neon-blue);
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { border-color: var(--neon-blue); }
+            50% { border-color: transparent; }
+        }
+        
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .floating-element {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.1;
+            animation: float-around 20s infinite linear;
+        }
+        
+        @keyframes float-around {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(100vw, 100vh) rotate(360deg); }
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .user-badge {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: var(--card-bg);
+            padding: 15px 25px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+        }
+        
+        .user-badge-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .user-badge-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-badge-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .user-badge-sport {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Section d'images au-dessus du tableau de données */
+        .sport-images-section {
+            margin-top: 80px;
+            padding: 0 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .sport-images-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .sport-images-title span {
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .sport-images-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        
+        .sport-image-card {
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            height: 250px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sport-image-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 243, 255, 0.2);
+            border-color: var(--neon-blue);
+        }
+        
+        .sport-image-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .sport-image-card:hover img {
+            transform: scale(1.1);
+        }
+        
+        .sport-image-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 20px;
+            color: white;
+        }
+        
+        .sport-image-badge {
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        
+        /* Nouveaux styles pour le tableau de données */
+        .data-display {
+            margin-top: 50px;
+            padding: 0 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .data-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .data-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .data-title {
+            font-size: 2rem;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .data-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid var(--neon-blue);
+        }
+        
+        .data-label {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 5px;
+            color: var(--neon-blue);
+        }
+        
+        .data-value {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .sport-highlight {
+            padding: 10px 20px;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
+            border-radius: 10px;
+            display: inline-block;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        .level-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .level-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .level-dot.active {
+            background: var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+        
+        /* Section recommandations personnalisées */
+        .recommendations-section {
+            margin-top: 80px;
+            padding: 0 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .recommendation-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .recommendation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .recommendation-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .recommendation-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--neon-blue);
+        }
+        
+        .recommendation-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--neon-green);
+        }
+        
+        @media (max-width: 768px) {
+            .glitch-title {
+                font-size: 3rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .user-badge {
+                top: 100px;
+                left: 20px;
+                right: 20px;
+                justify-content: center;
+            }
+            
+            .sport-images-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .data-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .data-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .recommendation-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .data-item[style*="grid-column: span 2"] {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animation de fond -->
+    <div class="bg-animation">
+        <div class="particles" id="particles"></div>
+    </div>
+    
+    <!-- Éléments flottants -->
+    <div class="floating-elements">
+        <div class="floating-element" style="top:10%; left:5%;">🏋️</div>
+        <div class="floating-element" style="top:20%; right:10%;">🧘</div>
+        <div class="floating-element" style="bottom:30%; left:15%;">🏃</div>
+        <div class="floating-element" style="bottom:10%; right:20%;">💪</div>
+    </div>
+    
+    <!-- Badge utilisateur -->
+    <div class="user-badge" id="userBadge">
+        <div class="user-badge-avatar" id="userBadgeAvatar">NN</div>
+        <div class="user-badge-info">
+            <div class="user-badge-name" id="userBadgeName">Numainna Nasri</div>
+            <div class="user-badge-sport" id="userBadgeSport">Yoga • Intermédiaire</div>
+        </div>
+    </div>
+    
+    <!-- Navigation 3D -->
+    <div class="nav-3d">
+        <div class="nav-button" id="menuBtn">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="nav-button" id="soundBtn">
+            <i class="fas fa-volume-up"></i>
+        </div>
+        <div class="nav-button" id="themeBtn">
+            <i class="fas fa-palette"></i>
+        </div>
+    </div>
+    
+    <!-- Statistiques en direct -->
+    <div class="live-stats">
+        <div class="stat-circle">
+            <div class="stat-value" id="activeUsers">2.4K</div>
+            <div>EN LIGNE</div>
+        </div>
+        <div class="stat-circle">
+            <div class="stat-value" id="workoutsDone">15K</div>
+            <div>SÉANCES</div>
+        </div>
+    </div>
+    
+    <!-- Section Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="glitch-container">
+                <h1 class="glitch-title">
+                    <span class="typing-text" id="typingTitle">CTO DE VOTRE SANTÉ POSTURALE</span>
+                </h1>
+            </div>
+            
+            <p class="hero-subtitle" id="heroSubtitle">
+                Redéfinissez votre pratique sportive avec l'IA. 
+                <span style="color: var(--neon-blue); font-weight: 600;">Découvrez le futur de l'entraînement personnalisé.</span>
+            </p>
+            
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 40px;">
+                <a href="/creative-qcm" class="cta-button">
+                    <i class="fas fa-rocket"></i>
+                    COMMENCER L'AVENTURE
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+                
+                <button class="cta-button" style="background: transparent; border: 2px solid var(--neon-blue);" onclick="playDemo()">
+                    <i class="fas fa-play-circle"></i>
+                    VISIONNER LA DÉMO
+                </button>
+            </div>
+            
+            <!-- Carrousel de témoignages -->
+            <div class="testimonials" style="margin-top: 60px; max-width: 800px;">
+                <div class="testimonial-slider">
+                    <div class="testimonial">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div id="userAvatar" class="user-avatar">NN</div>
+                            <div>
+                                <div id="userInfo" style="font-weight: 600;">Numainna Nasri, 24 ans</div>
+                                <div id="userQuote" style="opacity: 0.8;">"Cette technologie va révolutionner ma pratique sportive !"</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Section d'images sportives personnalisées -->
+    <section class="sport-images-section">
+        <h2 class="sport-images-title">
+            <span>VOTRE UNIVERS <span id="sportNameDisplay">SPORTIF</span></span>
+        </h2>
+        
+        <div class="sport-images-container" id="sportImagesContainer">
+            <!-- Les images seront générées dynamiquement par JavaScript -->
+        </div>
+    </section>
+    
+    <!-- Affichage des données du formulaire -->
+    <section class="data-display">
+        <div class="data-card">
+            <div class="data-header">
+                <h2 class="data-title">VOTRE PROFIL PERSONNALISÉ</h2>
+                <div style="display: flex; gap: 10px;">
+                    <button class="nav-button" onclick="editProfile()">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="nav-button" onclick="shareProfile()">
+                        <i class="fas fa-share-alt"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="data-grid">
+                <div class="data-item">
+                    <div class="data-label">IDENTITÉ</div>
+                    <div class="data-value" id="displayName">Numainna Nasri</div>
+                </div>
+                
+                <div class="data-item">
+                    <div class="data-label">ÂGE</div>
+                    <div class="data-value" id="displayAge">24 ans</div>
+                </div>
+                
+                <div class="data-item">
+                    <div class="data-label">SPORT PRÉFÉRÉ</div>
+                    <div class="data-value">
+                        <div id="displaySport">Yoga</div>
+                        <div class="sport-highlight" id="sportHighlight">
+                            <i class="fas fa-heart"></i> SPORT FAVORI
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="data-item">
+                    <div class="data-label">NIVEAU D'ACTIVITÉ</div>
+                    <div class="data-value">
+                        <div id="displayLevel">Intermédiaire</div>
+                        <div class="level-indicator" id="levelIndicator">
+                            <div class="level-dot" data-level="1"></div>
+                            <div class="level-dot active" data-level="2"></div>
+                            <div class="level-dot" data-level="3"></div>
+                            <div class="level-dot" data-level="4"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="data-item" style="grid-column: span 2;">
+                    <div class="data-label">VOTRE CITATION</div>
+                    <div class="data-value" id="displayQuote">"Cette technologie va révolutionner ma pratique sportive !"</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Section de recommandations personnalisées -->
+    <section class="recommendations-section">
+        <div class="recommendation-card">
+            <h2 class="data-title">RECOMMANDATIONS POUR VOUS</h2>
+            <p style="opacity: 0.8; margin-top: 10px;">Basées sur votre profil, voici nos suggestions personnalisées</p>
+            
+            <div class="recommendation-grid" id="recommendationsGrid">
+                <!-- Les recommandations seront générées dynamiquement -->
+            </div>
+        </div>
+    </section>
+    
+    <!-- Grille de fonctionnalités -->
+    <section class="features-section">
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-number">01</div>
+                <div class="feature-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3 style="margin-bottom: 15px; font-size: 1.5rem;">INTELLIGENCE ARTIFICIELLE</h3>
+                <p style="opacity: 0.8; line-height: 1.6;">
+                    Notre IA analyse vos mouvements en temps réel pour corriger votre posture et prévenir les blessures.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-number">02</div>
+                <div class="feature-icon">
+                    <i class="fas fa-vr-cardboard"></i>
+                </div>
+                <h3 style="margin-bottom: 15px; font-size: 1.5rem;">RÉALITÉ AUGMENTÉE</h3>
+                <p style="opacity: 0.8; line-height: 1.6;">
+                    Visualisez vos muscles en action avec notre système AR révolutionnaire.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-number">03</div>
+                <div class="feature-icon">
+                    <i class="fas fa-dna"></i>
+                </div>
+                <h3 style="margin-bottom: 15px; font-size: 1.5rem;">ADAPTATION GÉNÉTIQUE</h3>
+                <p style="opacity: 0.8; line-height: 1.6;">
+                    Programme d'entraînement adapté à votre morphologie et capacités physiques.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-number">04</div>
+                <div class="feature-icon">
+                    <i class="fas fa-chart-network"></i>
+                </div>
+                <h3 style="margin-bottom: 15px; font-size: 1.5rem;">COMMUNAUTÉ GLOBALE</h3>
+                <p style="opacity: 0.8; line-height: 1.6;">
+                    Rejoignez une communauté de 100K sportifs connectés pour partager vos progrès.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Base de données d'images par sport (utilisant des images placeholder de haute qualité)
+        const sportImages = {
+            'yoga': [
+                { url: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Yoga Flow Avancé', description: 'Séance de yoga dynamique' },
+                { url: 'https://images.unsplash.com/photo-1575052814086-f385e2e2ad1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Méditation en Pleine Nature', description: 'Trouvez votre paix intérieure' },
+                { url: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Yoga du Matin', description: 'Commencez votre journée avec énergie' },
+                { url: 'https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Yoga Thérapeutique', description: 'Soulagez vos tensions' }
+            ],
+            'musculation': [
+                { url: 'https://images.unsplash.com/photo-1534367507877-0edd93bd013b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Séance Intense', description: 'Développez votre force' },
+                { url: 'https://images.unsplash.com/photo-1534367507877-0edd93bd013b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Technique Parfaite', description: 'Optimisez chaque mouvement' },
+                { url: 'https://images.unsplash.com/photo-1534367507877-0edd93bd013b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Entraînement Fonctionnel', description: 'Force au quotidien' },
+                { url: 'https://images.unsplash.com/photo-1534367507877-0edd93bd013b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Récupération Active', description: 'Maximisez vos gains' }
+            ],
+            'running': [
+                { url: 'https://images.unsplash.com/photo-1552674605-db6ffd8facb5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Course en Nature', description: 'Connectez-vous à la nature' },
+                { url: 'https://images.unsplash.com/photo-1552674605-db6ffd8facb5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Entraînement Fractionné', description: 'Améliorez vos performances' },
+                { url: 'https://images.unsplash.com/photo-1552674605-db6ffd8facb5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Course Urbaine', description: 'Découvrez la ville autrement' },
+                { url: 'https://images.unsplash.com/photo-1552674605-db6ffd8facb5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Préparation Marathon', description: 'Visez l\'excellence' }
+            ],
+            'cyclisme': [
+                { url: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Cyclisme en Montagne', description: 'Défiez les sommets' },
+                { url: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Route Scénique', description: 'Paysages à couper le souffle' },
+                { url: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Entraînement Technique', description: 'Maîtrisez votre vélo' },
+                { url: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Cyclotourisme', description: 'Aventure et découverte' }
+            ],
+            'natation': [
+                { url: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Nage Libre', description: 'Fluidité et technique' },
+                { url: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Entraînement Intensif', description: 'Développez votre endurance' },
+                { url: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Natation Synchronisée', description: 'Harmonie et grâce' },
+                { url: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Aquagym', description: 'Tonifiez en douceur' }
+            ],
+            'crossfit': [
+                { url: 'https://images.unsplash.com/photo-1534367507877-0edd93bd013b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'WOD du Jour', description: 'Défi quotidien' },
+                { url: 'https://images.unsplash.com/photo-1534367507877-0edd93bd013b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Technique Avancée', description: 'Maîtrise des mouvements' },
+                { url: 'https://images.unsplash.com/photo-1534367507877-0edd93bd013b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Force et Conditionnement', description: 'Développez votre puissance' },
+                { url: 'https://images.unsplash.com/photo-1534367507877-0edd93bd013b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Communauté CrossFit', description: 'Entraide et motivation' }
+            ],
+            'tennis': [
+                { url: 'https://images.unsplash.com/photo-1622279457486-62dcc4a4310a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Service Puissant', description: 'Maîtrisez votre service' },
+                { url: 'https://images.unsplash.com/photo-1622279457486-62dcc4a4310a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Jeu au Filet', description: 'Précision et réactivité' },
+                { url: 'https://images.unsplash.com/photo-1622279457486-62dcc4a4310a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Entraînement Technique', description: 'Perfectionnez votre jeu' },
+                { url: 'https://images.unsplash.com/photo-1622279457486-62dcc4a4310a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Match Compétitif', description: 'Stratégie et mental' }
+            ],
+            'autre': [
+                { url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Sport Libre', description: 'Créez votre routine' },
+                { url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Mix d\'Activités', description: 'Variété et plaisir' },
+                { url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Découverte Sportive', description: 'Explorez de nouvelles pratiques' },
+                { url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80', title: 'Bien-être Global', description: 'Équilibre corps-esprit' }
+            ]
+        };
+
+        // Recommandations par niveau
+        const recommendationsByLevel = {
+            'debutant': [
+                { icon: 'fas fa-graduation-cap', title: 'Programme Débutant', description: 'Commencez en douceur avec des séances adaptées' },
+                { icon: 'fas fa-book', title: 'Tutoriels Vidéo', description: 'Apprenez les bases avec nos experts' },
+                { icon: 'fas fa-users', title: 'Communauté Débutants', description: 'Échangez avec d\'autres sportifs débutants' },
+                { icon: 'fas fa-chart-line', title: 'Suivi Progressif', description: 'Visualisez vos progrès semaine après semaine' }
+            ],
+            'intermediaire': [
+                { icon: 'fas fa-bullseye', title: 'Objectifs Personnalisés', description: 'Défiez-vous avec des objectifs adaptés' },
+                { icon: 'fas fa-dumbbell', title: 'Variété d\'Exercices', description: 'Diversifiez vos entraînements' },
+                { icon: 'fas fa-trophy', title: 'Challenges Hebdomadaires', description: 'Participez à nos défis communautaires' },
+                { icon: 'fas fa-brain', title: 'Analyse Technique', description: 'Améliorez votre technique avec l\'IA' }
+            ],
+            'avance': [
+                { icon: 'fas fa-fire', title: 'Programme Intensif', description: 'Poussez vos limites avec des séances avancées' },
+                { icon: 'fas fa-cogs', title: 'Optimisation Performance', description: 'Analyse détaillée de vos données' },
+                { icon: 'fas fa-medal', title: 'Compétitions Virtuelles', description: 'Affrontez d\'autres sportifs avancés' },
+                { icon: 'fas fa-microscope', title: 'Analyse Biomécanique', description: 'Perfectionnez chaque mouvement' }
+            ],
+            'expert': [
+                { icon: 'fas fa-crown', title: 'Programme Élite', description: 'Entraînement de niveau professionnel' },
+                { icon: 'fas fa-rocket', title: 'Performance Maximale', description: 'Optimisez chaque aspect de votre pratique' },
+                { icon: 'fas fa-chart-bar', title: 'Analyses Avancées', description: 'Données détaillées et prédictives' },
+                { icon: 'fas fa-user-tie', title: 'Coaching Personnalisé', description: 'Accès à nos coachs experts' }
+            ]
+        };
+
+        // Fonction pour récupérer les données du formulaire
+        function getUserData() {
+            const userProfile = localStorage.getItem('userProfile');
+            
+            if (userProfile) {
+                return JSON.parse(userProfile);
+            } else {
+                return {
+                    firstName: "Numainna",
+                    lastName: "Nasri",
+                    age: "24",
+                    sport: "yoga",
+                    fitnessLevel: "intermediaire",
+                    personalQuote: "Cette technologie va révolutionner ma pratique sportive !"
+                };
+            }
+        }
+
+        // Fonction pour afficher les images du sport choisi
+        function displaySportImages() {
+            const userData = getUserData();
+            const sport = userData.sport;
+            const container = document.getElementById('sportImagesContainer');
+            
+            // Mettre à jour le titre
+            document.getElementById('sportNameDisplay').textContent = getSportName(sport).toUpperCase();
+            
+            // Vider le conteneur
+            container.innerHTML = '';
+            
+            // Récupérer les images du sport
+            const images = sportImages[sport] || sportImages['autre'];
+            
+            // Créer et ajouter les cartes d'images
+            images.forEach(image => {
+                const card = document.createElement('div');
+                card.className = 'sport-image-card';
+                card.innerHTML = `
+                    <img src="${image.url}" alt="${image.title}" loading="lazy">
+                    <div class="sport-image-overlay">
+                        <div class="sport-image-badge">${getSportEmoji(sport)} ${getSportName(sport)}</div>
+                        <h3>${image.title}</h3>
+                        <p>${image.description}</p>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Fonction pour afficher les recommandations personnalisées
+        function displayRecommendations() {
+            const userData = getUserData();
+            const level = userData.fitnessLevel;
+            const container = document.getElementById('recommendationsGrid');
+            
+            // Vider le conteneur
+            container.innerHTML = '';
+            
+            // Récupérer les recommandations pour le niveau
+            const recommendations = recommendationsByLevel[level] || recommendationsByLevel['intermediaire'];
+            
+            // Créer et ajouter les cartes de recommandation
+            recommendations.forEach(rec => {
+                const item = document.createElement('div');
+                item.className = 'recommendation-item';
+                item.innerHTML = `
+                    <div class="recommendation-icon">
+                        <i class="${rec.icon}"></i>
+                    </div>
+                    <h3 style="margin-bottom: 10px; color: var(--neon-blue);">${rec.title}</h3>
+                    <p style="opacity: 0.8; font-size: 0.9rem;">${rec.description}</p>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // Fonction pour afficher les données utilisateur
+        function displayUserData() {
+            const userData = getUserData();
+            
+            // Mettre à jour le badge utilisateur
+            document.getElementById('userBadgeName').textContent = `${userData.firstName} ${userData.lastName}`;
+            document.getElementById('userBadgeSport').textContent = `${getSportName(userData.sport)} • ${getLevelName(userData.fitnessLevel)}`;
+            document.getElementById('userBadgeAvatar').textContent = getInitials(userData.firstName, userData.lastName);
+            
+            // Mettre à jour le témoignage
+            document.getElementById('userInfo').textContent = `${userData.firstName} ${userData.lastName}, ${userData.age} ans`;
+            document.getElementById('userQuote').textContent = `"${userData.personalQuote}"`;
+            document.getElementById('userAvatar').textContent = getInitials(userData.firstName, userData.lastName);
+            
+            // Mettre à jour l'affichage des données
+            document.getElementById('displayName').textContent = `${userData.firstName} ${userData.lastName}`;
+            document.getElementById('displayAge').textContent = `${userData.age} ans`;
+            document.getElementById('displaySport').textContent = getSportName(userData.sport);
+            document.getElementById('displayLevel').textContent = getLevelName(userData.fitnessLevel);
+            document.getElementById('displayQuote').textContent = `"${userData.personalQuote}"`;
+            
+            // Mettre à jour le highlight du sport
+            document.getElementById('sportHighlight').innerHTML = 
+                `<i class="fas fa-heart"></i> ${getSportEmoji(userData.sport)} ${getSportName(userData.sport).toUpperCase()}`;
+            
+            // Mettre à jour l'indicateur de niveau
+            updateLevelIndicator(userData.fitnessLevel);
+            
+            // Personnaliser le titre basé sur le sport
+            personalizeTitle(userData.sport);
+            
+            // Afficher les images du sport
+            displaySportImages();
+            
+            // Afficher les recommandations
+            displayRecommendations();
+        }
+
+        // Fonctions utilitaires
+        function getInitials(firstName, lastName) {
+            return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
+        }
+
+        function getSportName(sportKey) {
+            const sports = {
+                'musculation': 'Musculation',
+                'yoga': 'Yoga',
+                'running': 'Running',
+                'cyclisme': 'Cyclisme',
+                'natation': 'Natation',
+                'crossfit': 'CrossFit',
+                'tennis': 'Tennis',
+                'autre': 'Autre'
+            };
+            return sports[sportKey] || 'Sport';
+        }
+
+        function getLevelName(levelKey) {
+            const levels = {
+                'debutant': 'Débutant',
+                'intermediaire': 'Intermédiaire',
+                'avance': 'Avancé',
+                'expert': 'Expert'
+            };
+            return levels[levelKey] || 'Intermédiaire';
+        }
+
+        function getSportEmoji(sportKey) {
+            const emojis = {
+                'musculation': '🏋️',
+                'yoga': '🧘',
+                'running': '🏃',
+                'cyclisme': '🚴',
+                'natation': '🏊',
+                'crossfit': '💪',
+                'tennis': '🎾',
+                'autre': '⚽'
+            };
+            return emojis[sportKey] || '🏆';
+        }
+
+        function updateLevelIndicator(levelKey) {
+            const levelMap = {
+                'debutant': 1,
+                'intermediaire': 2,
+                'avance': 3,
+                'expert': 4
+            };
+            
+            const levelIndex = levelMap[levelKey] || 2;
+            const dots = document.querySelectorAll('.level-dot');
+            
+            dots.forEach((dot, index) => {
+                if (index < levelIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        function personalizeTitle(sportKey) {
+            const titles = {
+                'musculation': 'MAXIMISEZ VOS PERFORMANCES',
+                'yoga': 'TROUVEZ VOTRE ÉQUILIBRE',
+                'running': 'COUREZ PLUS INTELLIGEMMENT',
+                'cyclisme': 'PÉDALEZ VERS L\'EXCELLENCE',
+                'natation': 'NAGEZ COMME UN PRO',
+                'crossfit': 'PUSSEZ VOS LIMITES',
+                'tennis': 'JOUEZ GAGNANT',
+                'autre': 'RÉINVENTEZ VOTRE PRATIQUE'
+            };
+            
+            const title = titles[sportKey] || 'CTO DE VOTRE SANTÉ POSTURALE';
+            document.getElementById('typingTitle').textContent = title;
+        }
+
+        // Fonctions pour les boutons
+        function editProfile() {
+            window.location.href = 'page-personnalisation.html';
+        }
+
+        function shareProfile() {
+            const userData = getUserData();
+            const shareText = `Découvrez mon profil sportif Decathlon : ${userData.firstName} ${userData.lastName}, ${userData.age} ans, niveau ${getLevelName(userData.fitnessLevel)} en ${getSportName(userData.sport)}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Mon Profil Decathlon',
+                    text: shareText,
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(shareText);
+                alert('Profil copié dans le presse-papier !');
+            }
+        }
+
+        function playDemo() {
+            alert('Démo en cours de chargement...');
+        }
+
+        // Créer des particules animées
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = `${Math.random() * 10 + 5}px`;
+                particle.style.height = particle.style.width;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                particle.style.animationDuration = `${Math.random() * 10 + 10}s`;
+                particle.style.background = i % 3 === 0 ? 'var(--neon-blue)' : 
+                                           i % 3 === 1 ? 'var(--neon-pink)' : 'var(--neon-green)';
+                container.appendChild(particle);
+            }
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            displayUserData();
+            
+            // Animation du titre
+            const typingTitle = document.getElementById('typingTitle');
+            const originalText = typingTitle.textContent;
+            typingTitle.textContent = '';
+            let i = 0;
+            
+            function typeWriter() {
+                if (i < originalText.length) {
+                    typingTitle.textContent += originalText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 100);
+                }
+            }
+            
+            setTimeout(typeWriter, 1000);
+            
+            // Gestion des boutons de navigation
+            document.getElementById('menuBtn').addEventListener('click', () => {
+                alert('Menu ouvert');
+            });
+            
+            document.getElementById('soundBtn').addEventListener('click', function() {
+                const icon = this.querySelector('i');
+                if (icon.classList.contains('fa-volume-up')) {
+                    icon.classList.remove('fa-volume-up');
+                    icon.classList.add('fa-volume-mute');
+                } else {
+                    icon.classList.remove('fa-volume-mute');
+                    icon.classList.add('fa-volume-up');
+                }
+            });
+            
+            document.getElementById('themeBtn').addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                if (currentTheme === 'dark') {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                }
+            });
+            
+            // Mettre à jour les statistiques en direct (simulation)
+            setInterval(() => {
+                const activeUsers = document.getElementById('activeUsers');
+                const currentUsers = parseInt(activeUsers.textContent);
+                activeUsers.textContent = (currentUsers + Math.floor(Math.random() * 10)).toLocaleString();
+                
+                const workoutsDone = document.getElementById('workoutsDone');
+                const currentWorkouts = parseInt(workoutsDone.textContent);
+                workoutsDone.textContent = (currentWorkouts + Math.floor(Math.random() * 5)).toLocaleString();
+            }, 5000);
+        });
+    </script>
+</body>
+</html>

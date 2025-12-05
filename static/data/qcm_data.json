@@ -1,0 +1,169 @@
+{
+  "steps": [
+    {
+      "id": 1,
+      "title": "IDENTITÉ NEURO-SPORTIVE",
+      "icon": "fa-fingerprint",
+      "question": "Quelle est votre <span style='color: #00f3ff;'>signature énergétique</span> sportive ?",
+      "fieldName": "energy_type",
+      "options": [
+        {
+          "value": "explosif",
+          "icon": "fa-bolt",
+          "title": "EXPLOSIF ⚡",
+          "description": "Court et intense. Vous préférez les efforts brefs et puissants."
+        },
+        {
+          "value": "endurant",
+          "icon": "fa-tachometer-alt",
+          "title": "ENDURANT 🏃",
+          "description": "Long et régulier. Vous excellez dans la durée et la persévérance."
+        },
+        {
+          "value": "rythmique",
+          "icon": "fa-wave-square",
+          "title": "RYTHMIQUE 🎵",
+          "description": "Variable et fluide. Vous aimez alterner intensités et récupérations."
+        },
+        {
+          "value": "adaptatif",
+          "icon": "fa-random",
+          "title": "ADAPTATIF 🔄",
+          "description": "Flexible et versatile. Vous vous adaptez à tous les types d'efforts."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "ARCHITECTURE PHYSIQUE",
+      "icon": "fa-dna",
+      "question": "Quel est votre <span style='color: #00ff9d;'>profil morpho-fonctionnel</span> dominant ?",
+      "fieldName": "body_type",
+      "options": [
+        {
+          "value": "mesomorphe",
+          "icon": "fa-muscle",
+          "title": "MÉSOMORPHE 💪",
+          "description": "Ossature solide, musculature naturelle, prise de muscle rapide."
+        },
+        {
+          "value": "ectomorphe",
+          "icon": "fa-running",
+          "title": "ECTOMORPHE 🏃",
+          "description": "Mince, léger, métabolisme rapide, excellente endurance."
+        },
+        {
+          "value": "endomorphe",
+          "icon": "fa-weight",
+          "title": "ENDOMORPHE 🏋️",
+          "description": "Structure robuste, force naturelle, puissance explosive."
+        },
+        {
+          "value": "mixte",
+          "icon": "fa-blender",
+          "title": "MIXTE 🌈",
+          "description": "Combinaison équilibrée de plusieurs caractéristiques."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "ÉTAT NEURO-MENTAL",
+      "icon": "fa-brain",
+      "question": "Quel est votre <span style='color: #ff00ff;'>mode de concentration</span> préféré ?",
+      "fieldName": "focus_mode",
+      "options": [
+        {
+          "value": "focalise",
+          "icon": "fa-bullseye",
+          "title": "FOCALISÉ 🎯",
+          "description": "Concentration intense sur un objectif unique. Haute précision."
+        },
+        {
+          "value": "diffus",
+          "icon": "fa-expand-arrows-alt",
+          "title": "DIFFUS 🌐",
+          "description": "Attention large, multitâche, perception globale de l'environnement."
+        },
+        {
+          "value": "rythmique",
+          "icon": "fa-wave-square",
+          "title": "RYTHMIQUE 🎵",
+          "description": "Concentration cyclique, suivant un rythme ou une musique."
+        },
+        {
+          "value": "intuitif",
+          "icon": "fa-lightbulb",
+          "title": "INTUITIF 💡",
+          "description": "Concentration basée sur le feeling et l'instinct."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "OBJECTIFS QUANTIFIÉS",
+      "icon": "fa-chart-line",
+      "question": "Quelle <span style='color: #9d00ff;'>dimension</span> souhaitez-vous optimiser ?",
+      "fieldName": "primary_goal",
+      "options": [
+        {
+          "value": "performance",
+          "icon": "fa-trophy",
+          "title": "PERFORMANCE 🥇",
+          "description": "Améliorer vos records, compétitionner, repousser vos limites."
+        },
+        {
+          "value": "sante",
+          "icon": "fa-heartbeat",
+          "title": "SANTÉ ❤️",
+          "description": "Prévenir les blessures, améliorer longévité, bien-être général."
+        },
+        {
+          "value": "esthetique",
+          "icon": "fa-user",
+          "title": "ESTHÉTIQUE 🎨",
+          "description": "Sculpter votre physique, améliorer posture et apparence."
+        },
+        {
+          "value": "plaisir",
+          "icon": "fa-smile",
+          "title": "PLAISIR 😊",
+          "description": "Prendre du plaisir, se détendre, équilibre vie-sport."
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "FRÉQUENCE NUMÉRIQUE",
+      "icon": "fa-satellite",
+      "question": "Quelle est votre <span style='color: #00f3ff;'>connectivité sportive</span> ?",
+      "fieldName": "tech_level",
+      "options": [
+        {
+          "value": "connecte",
+          "icon": "fa-wifi",
+          "title": "CONNECTÉ 📱",
+          "description": "Montres connectées, apps, partage sur réseaux, données en temps réel."
+        },
+        {
+          "value": "analogique",
+          "icon": "fa-unplugged",
+          "title": "ANALOGIQUE 🪵",
+          "description": "Privilégie le feeling, minimalisme technologique, retour aux sensations."
+        },
+        {
+          "value": "hybride",
+          "icon": "fa-balance-scale",
+          "title": "HYBRIDE ⚖️",
+          "description": "Utilise technologie mais écoute son corps, équilibre data/sensation."
+        },
+        {
+          "value": "experimental",
+          "icon": "fa-flask",
+          "title": "EXPÉRIMENTAL 🧪",
+          "description": "Aime tester nouvelles technologies, innovations, gadgets expérimentaux."
+        }
+      ]
+    }
+  ]
+}

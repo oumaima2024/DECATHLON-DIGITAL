@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decathlon | Personnalisation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff00ff;
+            --neon-green: #00ff9d;
+            --dark-bg: #0a0a1a;
+            --card-bg: rgba(20, 20, 40, 0.8);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--dark-bg);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+        
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--neon-blue);
+            opacity: 0.3;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-100px) rotate(180deg); }
+        }
+        
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .floating-element {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.1;
+            animation: float-around 20s infinite linear;
+        }
+        
+        @keyframes float-around {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(100vw, 100vh) rotate(360deg); }
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            z-index: 1;
+        }
+        
+        .logo-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .logo-header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .logo-header p {
+            opacity: 0.8;
+            font-size: 1.2rem;
+        }
+        
+        .personalization-form {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.8s ease-out;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+        
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .form-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: white;
+        }
+        
+        .form-header p {
+            opacity: 0.8;
+            font-size: 1.1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--neon-blue);
+            font-size: 1.1rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        
+        .form-select option {
+            background: var(--dark-bg);
+            color: white;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .form-submit {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-green));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 30px;
+        }
+        
+        .form-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 243, 255, 0.3);
+        }
+        
+        .form-note {
+            text-align: center;
+            margin-top: 20px;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fitness-level {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .level-option {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .level-option:hover {
+            background: rgba(0, 243, 255, 0.1);
+            border-color: var(--neon-blue);
+        }
+        
+        .level-option.active {
+            background: rgba(0, 243, 255, 0.2);
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+        }
+        
+        .level-option i {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            color: var(--neon-green);
+        }
+        
+        @media (max-width: 768px) {
+            .personalization-form {
+                padding: 30px 20px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .fitness-level {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .logo-header h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animation de fond -->
+    <div class="bg-animation">
+        <div class="particles" id="particles"></div>
+    </div>
+    
+    <!-- Éléments flottants -->
+    <div class="floating-elements">
+        <div class="floating-element" style="top:10%; left:5%;">🏋️</div>
+        <div class="floating-element" style="top:20%; right:10%;">🧘</div>
+        <div class="floating-element" style="bottom:30%; left:15%;">🏃</div>
+        <div class="floating-element" style="bottom:10%; right:20%;">💪</div>
+    </div>
+    
+    <div class="container">
+        <div class="logo-header">
+            <h1>DECATHLON</h1>
+            <p>Santé Posturale 3.0 | Personnalisation</p>
+        </div>
+        
+        <div class="personalization-form">
+            <div class="form-header">
+                <h2><i class="fas fa-user-astronaut"></i> PERSONNALISEZ VOTRE EXPÉRIENCE</h2>
+                <p>Remplissez ce formulaire pour créer votre profil sportif personnalisé</p>
+            </div>
+            
+            <form id="userForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName"><i class="fas fa-user"></i> Prénom</label>
+                        <input type="text" id="firstName" class="form-input" placeholder="Votre prénom" required value="Oumaima">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="lastName"><i class="fas fa-user-tag"></i> Nom</label>
+                        <input type="text" id="lastName" class="form-input" placeholder="Votre nom" required value="Nasri">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="age"><i class="fas fa-birthday-cake"></i> Âge</label>
+                        <input type="number" id="age" class="form-input" placeholder="Votre âge" min="10" max="100" required value="24">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="sport"><i class="fas fa-running"></i> Sport préféré</label>
+                        <select id="sport" class="form-select" required>
+                            <option value="">Choisissez votre sport</option>
+                            <option value="musculation" selected>Musculation</option>
+                            <option value="yoga">Yoga</option>
+                            <option value="running">Running</option>
+                            <option value="cyclisme">Cyclisme</option>
+                            <option value="natation">Natation</option>
+                            <option value="crossfit">CrossFit</option>
+                            <option value="tennis">Tennis</option>
+                            <option value="autre">Autre</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-chart-line"></i> Niveau d'activité</label>
+                    <div class="fitness-level">
+                        <div class="level-option" data-level="debutant">
+                            <i class="fas fa-seedling"></i>
+                            Débutant
+                        </div>
+                        <div class="level-option active" data-level="intermediaire">
+                            <i class="fas fa-leaf"></i>
+                            Intermédiaire
+                        </div>
+                        <div class="level-option" data-level="avance">
+                            <i class="fas fa-fire"></i>
+                            Avancé
+                        </div>
+                        <div class="level-option" data-level="expert">
+                            <i class="fas fa-bolt"></i>
+                            Expert
+                        </div>
+                    </div>
+                    <input type="hidden" id="fitnessLevel" value="intermediaire" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="personalQuote"><i class="fas fa-comment-alt"></i> Votre citation personnelle</label>
+                    <textarea id="personalQuote" class="form-input" rows="3" placeholder="Écrivez une citation qui vous représente...">Cette technologie va révolutionner ma pratique sportive !</textarea>
+                </div>
+                
+                <button type="submit" class="form-submit">
+                    <i class="fas fa-magic"></i> PERSONNALISER MON EXPÉRIENCE
+                </button>
+                
+                <p class="form-note">
+                    <i class="fas fa-info-circle"></i> Vos données sont utilisées uniquement pour personnaliser votre expérience
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Créer des particules animées
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = `${Math.random() * 10 + 5}px`;
+                particle.style.height = particle.style.width;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                particle.style.animationDuration = `${Math.random() * 10 + 10}s`;
+                particle.style.background = i % 3 === 0 ? 'var(--neon-blue)' : 
+                                           i % 3 === 1 ? 'var(--neon-pink)' : 'var(--neon-green)';
+                container.appendChild(particle);
+            }
+        }
+        
+        // Gérer la sélection du niveau d'activité
+        function setupLevelSelection() {
+            const levelOptions = document.querySelectorAll('.level-option');
+            const fitnessLevelInput = document.getElementById('fitnessLevel');
+            
+            levelOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Retirer la classe active de toutes les options
+                    levelOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Ajouter la classe active à l'option cliquée
+                    this.classList.add('active');
+                    
+                    // Mettre à jour la valeur du champ caché
+                    fitnessLevelInput.value = this.dataset.level;
+                });
+            });
+        }
+        
+        // Gérer la soumission du formulaire
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            // Récupérer les valeurs du formulaire
+            const userData = {
+                firstName: document.getElementById('firstName').value.trim(),
+                lastName: document.getElementById('lastName').value.trim(),
+                age: document.getElementById('age').value,
+                sport: document.getElementById('sport').value,
+                fitnessLevel: document.getElementById('fitnessLevel').value,
+                personalQuote: document.getElementById('personalQuote').value.trim() || 
+                              "Cette technologie a révolutionné ma pratique sportive"
+            };
+            
+            // Stocker les données dans le localStorage
+            localStorage.setItem('userProfile', JSON.stringify(userData));
+            
+            // Afficher une animation de chargement
+            const submitButton = document.querySelector('.form-submit');
+            const originalText = submitButton.innerHTML;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> CRÉATION DE VOTRE PROFIL...';
+            submitButton.disabled = true;
+            
+            // Rediriger vers la page principale après 2 secondes
+            setTimeout(() => {
+                window.location.href = 'page-principale';
+            }, 2000);
+        }
+        
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            setupLevelSelection();
+            
+            // Gestion du formulaire
+            document.getElementById('userForm').addEventListener('submit', handleFormSubmit);
+            
+            // Pré-sélectionner Yoga comme dans votre image
+            document.getElementById('sport').value = 'yoga';
+        });
+    </script>
+</body>
+</html>

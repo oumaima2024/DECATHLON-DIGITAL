@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Votre Profil Sportif | Decathlon</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #00f3ff;
+            --success-color: #00ff9d;
+            --warning-color: #ffd166;
+            --danger-color: #ff6b6b;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 100%);
+            color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header du profil */
+        .profile-header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            border: 2px solid rgba(0, 243, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+        }
+        
+        .profile-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .profile-name {
+            font-size: 3rem;
+            margin: 10px 0;
+            background: linear-gradient(45deg, var(--primary-color), var(--success-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .profile-badge {
+            display: inline-block;
+            background: rgba(0, 243, 255, 0.2);
+            color: var(--primary-color);
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin: 15px 0;
+            border: 2px solid var(--primary-color);
+        }
+        
+        .profile-description {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 20px auto;
+            opacity: 0.9;
+        }
+        
+        /* Section des statistiques */
+        .stats-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+        }
+        
+        .stat-card {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+        }
+        
+        .stat-name {
+            font-size: 1rem;
+            text-transform: uppercase;
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+        
+        .stat-value {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 15px 0;
+            color: var(--primary-color);
+        }
+        
+        .stat-bar {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+        
+        .stat-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+            border-radius: 5px;
+            transition: width 1.5s ease-out;
+        }
+        
+        /* Section sports */
+        .sports-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .sports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .sport-card {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .sport-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        /* Section produits */
+        .products-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .product-card {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+            box-shadow: 0 10px 30px rgba(0, 243, 255, 0.1);
+        }
+        
+        .product-name {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .product-price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--success-color);
+            margin: 15px 0;
+        }
+        
+        .product-category {
+            display: inline-block;
+            background: rgba(0, 243, 255, 0.1);
+            color: var(--primary-color);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        /* Boutons d'action */
+        .actions-section {
+            text-align: center;
+            margin: 50px 0;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 18px 40px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            text-decoration: none;
+            margin: 10px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-color), var(--success-color));
+            color: #0a0a1a;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 243, 255, 0.3);
+        }
+        
+        /* Footer */
+        .profile-footer {
+            text-align: center;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            margin-top: 40px;
+            opacity: 0.8;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .profile-name {
+                font-size: 2.2rem;
+            }
+            
+            .section-title {
+                font-size: 1.7rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header du profil -->
+        <div class="profile-header">
+            <div class="profile-icon">
+                {% if profile.icon %}
+                    <i class="fas {{ profile.icon }}"></i>
+                {% else %}
+                    <i class="fas fa-user"></i>
+                {% endif %}
+            </div>
+            
+            <h1 class="profile-name">{{ profile.name }}</h1>
+            
+            <div class="profile-badge">
+                {{ profile.badge }}
+            </div>
+            
+            <p class="profile-description">
+                {{ profile.description|safe }}
+            </p>
+            
+            <div style="margin-top: 20px; font-size: 1.1rem;">
+                <strong>🎯 Nom:</strong> {{ nom }} | 
+                <strong>📅 Profil généré le:</strong> {{ now().strftime('%d/%m/%Y') if now else 'Aujourd\'hui' }}
+            </div>
+        </div>
+        
+        <!-- Section Statistiques -->
+        <div class="stats-section">
+            <h2 class="section-title">
+                <i class="fas fa-chart-line"></i> VOS STATISTIQUES
+            </h2>
+            
+            <div class="stats-grid">
+                {% for key, value in profile.scores.items() %}
+                <div class="stat-card">
+                    <div class="stat-name">
+                        {{ key|upper }}
+                    </div>
+                    <div class="stat-value" id="stat-{{ key }}">
+                        0%
+                    </div>
+                    <div class="stat-bar">
+                        <div class="stat-progress" id="progress-{{ key }}" data-value="{{ value }}"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Section Sports Recommandés -->
+        <div class="sports-section">
+            <h2 class="section-title">
+                <i class="fas fa-running"></i> SPORTS RECOMMANDÉS
+            </h2>
+            
+            <div style="margin-bottom: 20px; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px;">
+                <p style="margin: 0; font-size: 1.1rem;">
+                    <strong>📅 Programme d'entraînement:</strong> {{ profile.entrainement }}
+                </p>
+                <p style="margin: 10px 0 0 0; font-size: 1.1rem;">
+                    <strong>🥗 Conseil nutritionnel:</strong> {{ profile.nutrition }}
+                </p>
+            </div>
+            
+            <div class="sports-grid">
+                {% for sport in profile.sports_recommandes %}
+                <div class="sport-card">
+                    <div class="sport-icon">
+                        {% if loop.index == 1 %}🏋️
+                        {% elif loop.index == 2 %}🏃
+                        {% elif loop.index == 3 %}🏊
+                        {% else %}🤸{% endif %}
+                    </div>
+                    <h3 style="margin: 0;">{{ sport }}</h3>
+                    <p style="opacity: 0.8; margin-top: 10px;">
+                        Adapté à votre profil
+                    </p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Section Produits Recommandés -->
+        <div class="products-section">
+            <h2 class="section-title">
+                <i class="fas fa-shopping-cart"></i> ÉQUIPEMENTS RECOMMANDÉS
+            </h2>
+            
+            <p style="opacity: 0.9; margin-bottom: 20px;">
+                Des produits spécialement sélectionnés pour optimiser votre pratique sportive
+            </p>
+            
+            <div class="products-grid">
+                {% for produit in profile.produits %}
+                <div class="product-card">
+                    <h3 class="product-name">{{ produit.name }}</h3>
+                    <div class="product-price">{{ produit.price }}</div>
+                    <div class="product-category">{{ produit.categorie }}</div>
+                    <button style="width: 100%; padding: 12px; margin-top: 20px; background: rgba(0, 243, 255, 0.2); color: white; border: 1px solid var(--primary-color); border-radius: 8px; cursor: pointer;">
+                        <i class="fas fa-cart-plus"></i> Ajouter au panier
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Actions -->
+        <div class="actions-section">
+            <a href="/qcm" class="btn btn-primary">
+                <i class="fas fa-redo"></i> Refaire le test
+            </a>
+            <a href="/" class="btn btn-secondary">
+                <i class="fas fa-home"></i> Retour à l'accueil
+            </a>
+            <button onclick="window.print()" class="btn btn-secondary">
+                <i class="fas fa-print"></i> Imprimer mon profil
+            </button>
+        </div>
+        
+        <!-- Footer -->
+        <div class="profile-footer">
+            <p>© 2024 Decathlon - Profilage Sportif Personnalisé</p>
+            <p style="font-size: 0.9rem; opacity: 0.7;">
+                Ces recommandations sont basées sur votre profil. Consultez un professionnel de santé avant de débuter un nouveau programme sportif.
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        // Animation des statistiques
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎯 Profil chargé avec succès!');
+            
+            // Animer les barres de progression
+            document.querySelectorAll('.stat-progress').forEach(progress => {
+                const value = parseInt(progress.getAttribute('data-value'));
+                progress.style.width = '0%';
+                
+                setTimeout(() => {
+                    progress.style.width = value + '%';
+                }, 300);
+            });
+            
+            // Animer les valeurs numériques
+            document.querySelectorAll('.stat-value').forEach(stat => {
+                const target = parseInt(stat.parentElement.querySelector('.stat-progress').getAttribute('data-value'));
+                let current = 0;
+                const duration = 1500; // 1.5 secondes
+                const increment = target / (duration / 20);
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    stat.textContent = Math.round(current) + '%';
+                }, 20);
+            });
+            
+            // Effet de confetti au chargement
+            setTimeout(() => {
+                createConfetti();
+            }, 1000);
+            
+            // Données de debug
+            console.log('📊 Données du profil:', {
+                nom: "{{ nom }}",
+                profileType: "{{ profile_type }}",
+                profileName: "{{ profile.name }}",
+                scores: {{ profile.scores|tojson|safe }}
+            });
+        });
+        
+        // Effet confetti
+        function createConfetti() {
+            const colors = ['#00f3ff', '#00ff9d', '#ffd166', '#ff6b6b', '#9d00ff'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.cssText = `
+                    position: fixed;
+                    width: 10px;
+                    height: 10px;
+                    background: ${colors[Math.floor(Math.random() * colors.length)]};
+                    border-radius: 50%;
+                    top: -20px;
+                    left: ${Math.random() * 100}%;
+                    opacity: 0.8;
+                    z-index: 1000;
+                    pointer-events: none;
+                `;
+                
+                document.body.appendChild(confetti);
+                
+                // Animation
+                const animation = confetti.animate([
+                    { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+                    { transform: `translateY(${window.innerHeight + 20}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+                ], {
+                    duration: 2000 + Math.random() * 2000,
+                    easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)'
+                });
+                
+                animation.onfinish = () => confetti.remove();
+            }
+        }
+        
+        // Gestion des erreurs
+        window.addEventListener('error', function(e) {
+            console.error('❌ Erreur JavaScript:', e.message);
+            console.error('Fichier:', e.filename);
+            console.error('Ligne:', e.lineno);
+        });
+    </script>
+</body>
+</html>

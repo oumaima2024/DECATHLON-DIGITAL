@@ -1,0 +1,1943 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠 Profilage Neuro-Sportif | Decathlon</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --cyber-blue: #00f3ff;
+            --cyber-pink: #ff00ff;
+            --cyber-green: #00ff9d;
+            --cyber-purple: #9d00ff;
+            --dark-space: #0a0a1a;
+            --neon-glow: 0 0 10px, 0 0 20px, 0 0 40px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: var(--dark-space);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        .cyber-grid {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -3;
+            animation: gridMove 20s linear infinite;
+        }
+        
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        
+        .particle-field {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+        
+        .cyber-header {
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .glitch-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .glitch-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 3.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: transparent;
+            background: linear-gradient(45deg, var(--cyber-blue), var(--cyber-pink), var(--cyber-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            position: relative;
+            animation: textGlow 2s infinite alternate;
+        }
+        
+        @keyframes textGlow {
+            0% { text-shadow: 0 0 5px var(--cyber-blue), 0 0 10px var(--cyber-blue); }
+            50% { text-shadow: 0 0 5px var(--cyber-pink), 0 0 10px var(--cyber-pink); }
+            100% { text-shadow: 0 0 5px var(--cyber-green), 0 0 10px var(--cyber-green); }
+        }
+        
+        .progress-holo {
+            max-width: 800px;
+            margin: 30px auto;
+            position: relative;
+        }
+        
+        .progress-ring {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+        }
+        
+        .progress-ring svg {
+            transform: rotate(-90deg);
+        }
+        
+        .progress-ring-circle {
+            fill: none;
+            stroke-width: 8;
+            stroke-linecap: round;
+            transform-origin: center;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+        
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--cyber-blue);
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 40px auto;
+            max-width: 800px;
+        }
+        
+        .step-dot {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--cyber-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .step-dot.active {
+            background: var(--cyber-blue);
+            box-shadow: 0 0 20px var(--cyber-blue);
+            transform: scale(1.2);
+        }
+        
+        .step-dot.completed {
+            background: var(--cyber-green);
+            border-color: var(--cyber-green);
+        }
+        
+        .step-line {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            height: 2px;
+            background: rgba(0, 243, 255, 0.3);
+            z-index: 1;
+        }
+        
+        .step-line-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .qcm-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px 100px;
+        }
+        
+        .question-card {
+            background: rgba(20, 20, 40, 0.8);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+            position: relative;
+            overflow: hidden;
+            display: none;
+        }
+        
+        .question-card.active {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .question-card:hover {
+            border-color: var(--cyber-blue);
+            transform: translateY(-5px);
+        }
+        
+        .question-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--cyber-blue), transparent, var(--cyber-pink));
+            border-radius: 22px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        
+        .question-card:hover::before {
+            opacity: 1;
+            animation: borderRotate 3s linear infinite;
+        }
+        
+        @keyframes borderRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .question-number {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.2rem;
+            color: var(--cyber-blue);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .question-text {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+        
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .cyber-option {
+            background: rgba(30, 30, 60, 0.6);
+            border: 2px solid rgba(0, 243, 255, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cyber-option:hover {
+            border-color: var(--cyber-blue);
+            transform: translateX(10px);
+            background: rgba(0, 243, 255, 0.1);
+        }
+        
+        .cyber-option.selected {
+            border-color: var(--cyber-green);
+            background: rgba(0, 255, 157, 0.1);
+            transform: translateX(10px);
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.3);
+            animation: pulseSelect 0.5s ease;
+        }
+        
+        @keyframes pulseSelect {
+            0% { transform: translateX(10px) scale(1); }
+            50% { transform: translateX(10px) scale(1.05); }
+            100% { transform: translateX(10px) scale(1); }
+        }
+        
+        .cyber-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: 0.5s;
+        }
+        
+        .cyber-option:hover::before {
+            left: 100%;
+        }
+        
+        .option-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, var(--cyber-blue), var(--cyber-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .option-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        
+        .option-desc {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            line-height: 1.5;
+        }
+        
+        .option-check {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(0, 255, 157, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .cyber-option.selected .option-check {
+            opacity: 1;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+            padding: 0 20px;
+        }
+        
+        .cyber-button {
+            padding: 15px 40px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .cyber-button.prev {
+            background: transparent;
+            border: 2px solid var(--cyber-blue);
+            color: var(--cyber-blue);
+        }
+        
+        .cyber-button.next {
+            background: linear-gradient(45deg, var(--cyber-blue), var(--cyber-green));
+            color: white;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+        }
+        
+        .cyber-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 243, 255, 0.3);
+        }
+        
+        .cyber-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 5px 15px rgba(0, 243, 255, 0.2);
+        }
+        
+        .cyber-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .cyber-button:disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .ai-assistant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--cyber-purple), var(--cyber-pink));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(157, 0, 255, 0.5);
+            z-index: 1000;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .ai-chat {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 300px;
+            background: rgba(20, 20, 40, 0.95);
+            border-radius: 15px;
+            border: 1px solid var(--cyber-purple);
+            padding: 20px;
+            display: none;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .ai-chat.active {
+            display: block;
+            animation: slideUp 0.3s ease;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .ai-message {
+            background: rgba(157, 0, 255, 0.1);
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            border-left: 3px solid var(--cyber-purple);
+        }
+        
+        .data-visual {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            background: rgba(20, 20, 40, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid var(--cyber-blue);
+            backdrop-filter: blur(10px);
+            display: none;
+        }
+        
+        .data-visual.active {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        .visualization {
+            width: 200px;
+            height: 200px;
+        }
+        
+        .completion-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 26, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+        
+        .completion-animation.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--cyber-blue);
+            animation: confettiFall 5s linear infinite;
+        }
+        
+        @keyframes confettiFall {
+            0% { transform: translateY(-100px) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+        
+        /* Page des résultats */
+        .results-page {
+            display: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .results-page.active {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        .profile-card {
+            background: rgba(20, 20, 40, 0.8);
+            border-radius: 25px;
+            padding: 50px;
+            margin-bottom: 40px;
+            border: 2px solid rgba(0, 243, 255, 0.3);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--cyber-blue), var(--cyber-pink), var(--cyber-green));
+            border-radius: 27px;
+            z-index: -1;
+            opacity: 0.5;
+            animation: borderRotate 10s linear infinite;
+        }
+        
+        .profile-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .profile-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--cyber-blue), var(--cyber-purple));
+            padding: 20px 40px;
+            border-radius: 60px;
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: 900;
+            margin: 30px 0;
+            box-shadow: 0 0 40px rgba(0, 243, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .stat-card {
+            background: rgba(30, 30, 60, 0.6);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--cyber-blue);
+        }
+        
+        .stat-value {
+            font-size: 3.5rem;
+            font-weight: 900;
+            font-family: 'Orbitron', monospace;
+            background: linear-gradient(45deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .recommendation-box {
+            background: rgba(0, 255, 157, 0.1);
+            border: 3px solid var(--cyber-green);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        .recommendation-title {
+            font-size: 2.5rem;
+            color: var(--cyber-green);
+            font-family: 'Orbitron', monospace;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .glitch-title {
+                font-size: 2.2rem;
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .question-card {
+                padding: 25px;
+            }
+            
+            .navigation-buttons {
+                flex-direction: column;
+                gap: 20px;
+                align-items: center;
+            }
+            
+            .cyber-button {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .data-visual {
+                position: relative;
+                top: auto;
+                left: auto;
+                margin: 20px auto;
+                width: 90%;
+            }
+            
+            .profile-card {
+                padding: 25px;
+            }
+            
+            .profile-badge {
+                font-size: 1.5rem;
+                padding: 15px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Grille cyberpunk -->
+    <div class="cyber-grid"></div>
+    
+    <!-- Champ de particules -->
+    <div class="particle-field" id="particleField"></div>
+    
+    <!-- Assistant IA -->
+    <div class="ai-assistant" id="aiAssistant">
+        <i class="fas fa-robot"></i>
+    </div>
+    
+    <div class="ai-chat" id="aiChat">
+        <div class="ai-message">
+            🤖 <strong>Coach IA:</strong> Bonjour ! Je suis là pour vous guider dans ce profilage.
+        </div>
+        <div class="ai-message">
+            💡 <strong>Conseil:</strong> Répondez honnêtement pour des recommandations optimales.
+        </div>
+        <div class="ai-message">
+            ⚡ <strong>Astuce:</strong> Cliquez sur une option pour la sélectionner.
+        </div>
+    </div>
+    
+    <!-- Visualisation de données -->
+    <div class="data-visual" id="dataVisual">
+        <h4 style="margin-bottom: 15px; color: var(--cyber-blue);">
+            <i class="fas fa-chart-line"></i> ANALYSE EN TEMPS RÉEL
+        </h4>
+        <div class="visualization">
+            <canvas id="radarChart"></canvas>
+        </div>
+    </div>
+    
+    <!-- Animation de complétion -->
+    <div class="completion-animation" id="completionAnimation">
+        <div class="confetti" style="left: 10%; animation-delay: 0s; background: var(--cyber-blue);"></div>
+        <div class="confetti" style="left: 20%; animation-delay: 0.5s; background: var(--cyber-pink);"></div>
+        <div class="confetti" style="left: 30%; animation-delay: 1s; background: var(--cyber-green);"></div>
+        
+        <h1 style="font-size: 4rem; margin-bottom: 30px; color: var(--cyber-green);">
+            <i class="fas fa-trophy"></i> PROFIL COMPLÉTÉ !
+        </h1>
+        <p style="font-size: 1.5rem; margin-bottom: 40px; text-align: center;">
+            Votre analyse neuro-sportive est prête
+        </p>
+        <button class="cyber-button next" id="resultsBtn" style="font-size: 1.3rem; padding: 20px 50px;">
+            <i class="fas fa-rocket"></i>
+            DÉCOUVRIR MON PROFIL
+        </button>
+    </div>
+    
+    <!-- Page principale QCM -->
+    <div id="mainPage">
+        <!-- Header -->
+        <header class="cyber-header">
+            <div class="glitch-container">
+                <h1 class="glitch-title">PROFILAGE NEURO-SPORTIF</h1>
+            </div>
+            
+            <div class="progress-holo">
+                <div class="progress-ring">
+                    <svg width="120" height="120">
+                        <circle class="progress-ring-circle" 
+                                cx="60" cy="60" r="54" 
+                                stroke="#00f3ff" 
+                                stroke-width="8" 
+                                stroke-dasharray="339.292" 
+                                stroke-dashoffset="339.292">
+                        </circle>
+                    </svg>
+                    <div class="progress-text" id="progressText">0%</div>
+                </div>
+            </div>
+            
+            <div class="step-indicator">
+                <div class="step-line"></div>
+                <div class="step-line-progress" id="stepLineProgress"></div>
+                
+                <div class="step-dot active" data-step="1">
+                    <span>1</span>
+                    <div style="position: absolute; bottom: -30px; font-size: 0.8rem; white-space: nowrap;">
+                        IDENTITÉ
+                    </div>
+                </div>
+                <div class="step-dot" data-step="2">
+                    <span>2</span>
+                    <div style="position: absolute; bottom: -30px; font-size: 0.8rem; white-space: nowrap;">
+                        PHYSIQUE
+                    </div>
+                </div>
+                <div class="step-dot" data-step="3">
+                    <span>3</span>
+                    <div style="position: absolute; bottom: -30px; font-size: 0.8rem; white-space: nowrap;">
+                        MENTAL
+                    </div>
+                </div>
+                <div class="step-dot" data-step="4">
+                    <span>4</span>
+                    <div style="position: absolute; bottom: -30px; font-size: 0.8rem; white-space: nowrap;">
+                        OBJECTIFS
+                    </div>
+                </div>
+                <div class="step-dot" data-step="5">
+                    <span>5</span>
+                    <div style="position: absolute; bottom: -30px; font-size: 0.8rem; white-space: nowrap;">
+                        ANALYSE
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Formulaire QCM -->
+        <div class="qcm-container" id="qcmContainer">
+            <form id="neuroForm">
+                <!-- Étape 1: Identité Neuro-Sportive -->
+                <div class="question-card active" data-step="1">
+                    <div class="question-number">
+                        <i class="fas fa-fingerprint"></i>
+                        ÉTAPE 01 | IDENTITÉ NEURO-SPORTIVE
+                    </div>
+                    
+                    <h2 class="question-text">
+                        Quelle est votre <span style="color: var(--cyber-blue);">signature énergétique</span> sportive ?
+                    </h2>
+                    
+                    <div class="options-grid">
+                        <div class="cyber-option" data-value="explosif">
+                            <div class="option-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div class="option-text">EXPLOSIF ⚡</div>
+                            <div class="option-desc">
+                                Court et intense. Vous préférez les efforts brefs et puissants.
+                            </div>
+                            <div class="option-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="cyber-option" data-value="endurant">
+                            <div class="option-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <div class="option-text">ENDURANT 🏃</div>
+                            <div class="option-desc">
+                                Long et régulier. Vous excellez dans la durée et la persévérance.
+                            </div>
+                            <div class="option-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="cyber-option" data-value="rythmique">
+                            <div class="option-icon">
+                                <i class="fas fa-wave-square"></i>
+                            </div>
+                            <div class="option-text">RYTHMIQUE 🎵</div>
+                            <div class="option-desc">
+                                Variable et fluide. Vous aimez alterner intensités et récupérations.
+                            </div>
+                            <div class="option-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="cyber-option" data-value="adaptatif">
+                            <div class="option-icon">
+                                <i class="fas fa-random"></i>
+                            </div>
+                            <div class="option-text">ADAPTATIF 🔄</div>
+                            <div class="option-desc">
+                                Flexible et versatile. Vous vous adaptez à tous les types d'efforts.
+                            </div>
+                            <div class="option-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" name="energy_type" id="energyType">
+                </div>
+                
+                <!-- Étape 2: Architecture Physique -->
+                <div class="question-card" data-step="2">
+                    <div class="question-number">
+                        <i class="fas fa-dna"></i>
+                        ÉTAPE 02 | ARCHITECTURE PHYSIQUE
+                    </div>
+                    
+                    <h2 class="question-text">
+                        Quel est votre <span style="color: var(--cyber-green);">profil morpho-fonctionnel</span> dominant ?
+                    </h2>
+                    
+                    <div class="options-grid">
+                        <div class="cyber-option" data-value="mesomorphe">
+                            <div class="option-icon">
+                                <i class="fas fa-muscle"></i>
+                            </div>
+                            <div class="option-text">MÉSOMORPHE 💪</div>
+                            <div class="option-desc">
+                                Ossature solide, musculature naturelle, prise de muscle rapide.
+                            </div>
+                            <div class="option-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="cyber-option" data-value="ectomorphe">
+                            <div class="option-icon">
+                                <i class="fas fa-running"></i>
+                            </div>
+                            <div class="option-text">ECTOMORPHE 🏃</div>
+                            <div class="option-desc">
+                                Mince, léger, métabolisme rapide, excellente endurance.
+                            </div>
+                            <div class="option-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="cyber-option" data-value="endomorphe">
+                            <div class="option-icon">
+                                <i class="fas fa-weight"></i>
+                            </div>
+                            <div class="option-text">ENDOMORPHE 🏋️</div>
+                            <div class="option-desc">
+                                Structure robuste, force naturelle, puissance explosive.
+                            </div>
+                            <div class="option-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="cyber-option" data-value="mixte">
+                            <div class="option-icon">
+                                <i class="fas fa-blender"></i>
+                            </div>
+                            <div class="option-text">MIXTE 🌈</div>
+                            <div class="option-desc">
+                                Combinaison équilibrée de plusieurs caractéristiques.
+                            </div>
+                            <div class="option-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" name="body_type" id="bodyType">
+                </div>
+                
+                <!-- Étape 3: État Mental -->
+                <div class="question-card" data-step="3">
+                    <div class="question-number">
+                        <i class="fas fa-brain"></i>
+                        ÉTAPE 03 | ÉTAT NEURO-MENTAL
+                    </div>
+                    
+                    <h2 class="question-text">
+                        Quel est votre <span style="color: var(--cyber-pink);">mode de concentration</span> préféré ?
+                    </h2>
+                    
+                    <div class="options-grid">
+                        <div class="cyber-option" data-value="focalise">
+                            <div class="option-icon">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            <div class="option-text">FOCALISÉ 🎯</div>
+                            <div class="option-desc">
+                                Concentration intense sur un objectif unique. Haute précision.
+                            </div>
+                            <div class="option-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="cyber-option" data-value="diffus">
+                            <div class="option-icon">
+                                <i class="fas fa-expand-arrows-alt"></i>
+                            </div>
+                            <div class="option-text">DIFFUS 🌐</div>
+                            <div class="option-desc">
+                                Attention large, multitâche, perception globale de l'environnement.
+                            </div>
+                            <div class="option-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="cyber-option" data-value="rythmique">
+                            <div class="option-icon">
+                                <i class="fas fa-wave-square"></i>
+                            </div>
+                            <div class="option-text">RYTHMIQUE 🎵</div>
+                            <div class="option-desc">
+                                Concentration cyclique, suivant un rythme ou une musique.
+                            </div>
+                            <div class="option-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="cyber-option" data-value="intuitif">
+                            <div class="option-icon">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <div class="option-text">INTUITIF 💡</div>
+                            <div class="option-desc">
+                                Concentration basée sur le feeling et l'instinct.
+                            </div>
+                            <div class="option-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" name="focus_mode" id="focusMode">
+                </div>
+                
+                <!-- Étape 4: Objectifs Quantifiés -->
+                <div class="question-card" data-step="4">
+                    <div class="question-number">
+                        <i class="fas fa-chart-line"></i>
+                        ÉTAPE 04 | OBJECTIFS QUANTIFIÉS
+                    </div>
+                    
+                    <h2 class="question-text">
+                        Quelle <span style="color: var(--cyber-purple);">dimension</span> souhaitez-vous optimiser ?
+                    </h2>
+                    
+                    <div class="options-grid">
+                        <div class="cyber-option" data-value="performance">
+                            <div class="option-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="option-text">PERFORMANCE 🥇</div>
+                            <div class="option-desc">
+                                Améliorer vos records, compétitionner, repousser vos limites.
+                            </div>
+                            <div class="option-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="cyber-option" data-value="sante">
+                            <div class="option-icon">
+                                <i class="fas fa-heartbeat"></i>
+                            </div>
+                            <div class="option-text">SANTÉ ❤️</div>
+                            <div class="option-desc">
+                                Prévenir les blessures, améliorer longévité, bien-être général.
+                            </div>
+                            <div class="option-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="cyber-option" data-value="esthetique">
+                            <div class="option-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="option-text">ESTHÉTIQUE 🎨</div>
+                            <div class="option-desc">
+                                Sculpter votre physique, améliorer posture et apparence.
+                            </div>
+                            <div class="option-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="cyber-option" data-value="plaisir">
+                            <div class="option-icon">
+                                <i class="fas fa-smile"></i>
+                            </div>
+                            <div class="option-text">PLAISIR 😊</div>
+                            <div class="option-desc">
+                                Prendre du plaisir, se détendre, équilibre vie-sport.
+                            </div>
+                            <div class="option-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" name="primary_goal" id="primaryGoal">
+                </div>
+                
+                <!-- Étape 5: Fréquence Digitale -->
+                <div class="question-card" data-step="5">
+                    <div class="question-number">
+                        <i class="fas fa-satellite"></i>
+                        ÉTAPE 05 | FRÉQUENCE NUMÉRIQUE
+                    </div>
+                    
+                    <h2 class="question-text">
+                        Quelle est votre <span style="color: var(--cyber-blue);">connectivité sportive</span> ?
+                    </h2>
+                    
+                    <div class="options-grid">
+                        <div class="cyber-option" data-value="connecte">
+                            <div class="option-icon">
+                                <i class="fas fa-wifi"></i>
+                            </div>
+                            <div class="option-text">CONNECTÉ 📱</div>
+                            <div class="option-desc">
+                                Montres connectées, apps, partage sur réseaux, données en temps réel.
+                            </div>
+                            <div class="option-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="cyber-option" data-value="analogique">
+                            <div class="option-icon">
+                                <i class="fas fa-unplugged"></i>
+                            </div>
+                            <div class="option-text">ANALOGIQUE 🪵</div>
+                            <div class="option-desc">
+                                Privilégie le feeling, minimalisme technologique, retour aux sensations.
+                            </div>
+                            <div class="option-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="cyber-option" data-value="hybride">
+                            <div class="option-icon">
+                                <i class="fas fa-balance-scale"></i>
+                            </div>
+                            <div class="option-text">HYBRIDE ⚖️</div>
+                            <div class="option-desc">
+                                Utilise technologie mais écoute son corps, équilibre data/sensation.
+                            </div>
+                            <div class="option-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="cyber-option" data-value="experimental">
+                            <div class="option-icon">
+                                <i class="fas fa-flask"></i>
+                            </div>
+                            <div class="option-text">EXPÉRIMENTAL 🧪</div>
+                            <div class="option-desc">
+                                Aime tester nouvelles technologies, innovations, gadgets expérimentaux.
+                            </div>
+                            <div class="option-check">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" name="tech_level" id="techLevel">
+                </div>
+            </form>
+            
+            <!-- Navigation -->
+            <div class="navigation-buttons">
+                <button class="cyber-button prev" id="prevBtn" disabled>
+                    <i class="fas fa-arrow-left"></i>
+                    PRÉCÉDENT
+                </button>
+                
+                <button class="cyber-button next" id="nextBtn">
+                    SUIVANT
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+                
+                <button class="cyber-button next" id="submitBtn" style="display: none;">
+                    ANALYSER MON PROFIL
+                    <i class="fas fa-brain"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Page des résultats -->
+    <div id="resultsPage" class="results-page">
+        <header class="cyber-header">
+            <div class="glitch-container">
+                <h1 class="glitch-title">RÉSULTATS DU PROFILAGE</h1>
+            </div>
+            
+            <div style="margin-top: 30px;">
+                <div class="profile-badge" id="resultProfileBadge">
+                    CHARGEMENT...
+                </div>
+            </div>
+        </header>
+        
+        <div class="qcm-container">
+            <div class="profile-card">
+                <div class="profile-header">
+                    <h2 style="font-size: 2.2rem; margin-bottom: 20px; color: var(--cyber-blue);">
+                        <i class="fas fa-chart-network"></i>
+                        VOTRE PROFIL NEURO-SPORTIF
+                    </h2>
+                    <p style="font-size: 1.3rem; opacity: 0.8; max-width: 800px; margin: 0 auto;">
+                        Analyse complète basée sur vos réponses
+                    </p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3 style="color: var(--cyber-blue); margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-bolt"></i> SIGNATURE ÉNERGÉTIQUE
+                        </h3>
+                        <div class="stat-value" id="resultEnergy">
+                            EXPLOSIF
+                        </div>
+                        <p style="text-align: center; opacity: 0.8;">
+                            Court et intense, puissance maximale
+                        </p>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <h3 style="color: var(--cyber-green); margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-dna"></i> ARCHITECTURE PHYSIQUE
+                        </h3>
+                        <div class="stat-value" id="resultBody">
+                            MÉSOMORPHE
+                        </div>
+                        <p style="text-align: center; opacity: 0.8;">
+                            Musculature naturelle, force explosive
+                        </p>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <h3 style="color: var(--cyber-pink); margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-brain"></i> CONCENTRATION
+                        </h3>
+                        <div class="stat-value" id="resultFocus">
+                            FOCALISÉ
+                        </div>
+                        <p style="text-align center; opacity: 0.8;">
+                            Haute précision, objectif unique
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="recommendation-box">
+                    <div class="recommendation-title">
+                        <i class="fas fa-trophy"></i> SPORT RECOMMANDÉ
+                    </div>
+                    <div style="font-size: 3rem; font-weight: bold; color: var(--cyber-green); margin: 20px 0;" id="resultSport">
+                        SQUAT
+                    </div>
+                    <p style="font-size: 1.3rem; max-width: 800px; margin: 0 auto; line-height: 1.6;" id="resultSportDesc">
+                        Parfait pour développer votre puissance explosive et votre force naturelle.
+                        Idéal pour les profils mésomorphes avec une énergie explosive.
+                    </p>
+                </div>
+                
+                <div style="margin-top: 50px;">
+                    <h3 style="color: var(--cyber-purple); margin-bottom: 25px; font-size: 1.8rem; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-tools"></i> ÉQUIPEMENT RECOMMANDÉ
+                    </h3>
+                    <div class="options-grid">
+                        <div class="cyber-option" style="cursor: default;">
+                            <div class="option-icon">
+                                <i class="fas fa-shoe-prints"></i>
+                            </div>
+                            <div class="option-text">CHAUSSURES DE SQUAT</div>
+                            <div class="option-desc">
+                                Semelles stables pour meilleure poussée
+                            </div>
+                        </div>
+                        
+                        <div class="cyber-option" style="cursor: default;">
+                            <div class="option-icon">
+                                <i class="fas fa-weight-hanging"></i>
+                            </div>
+                            <div class="option-text">CEINTURE DE FORCE</div>
+                            <div class="option-desc">
+                                Support lombaire pour charges lourdes
+                            </div>
+                        </div>
+                        
+                        <div class="cyber-option" style="cursor: default;">
+                            <div class="option-icon">
+                                <i class="fas fa-dumbbell"></i>
+                            </div>
+                            <div class="option-text">BARRE OLYMPIQUE</div>
+                            <div class="option-desc">
+                                Pour développements complets
+                            </div>
+                        </div>
+                        
+                        <div class="cyber-option" style="cursor: default;">
+                            <div class="option-icon">
+                                <i class="fas fa-heartbeat"></i>
+                            </div>
+                            <div class="option-text">MONITORE CARDIAQUE</div>
+                            <div class="option-desc">
+                                Suivi de l'intensité des séances
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 60px; padding-top: 40px; border-top: 1px solid rgba(0, 243, 255, 0.2);">
+                    <button class="cyber-button next" id="newProfileBtn" style="padding: 20px 50px; font-size: 1.2rem;">
+                        <i class="fas fa-redo"></i>
+                        NOUVEAU PROFIL
+                    </button>
+                    <button class="cyber-button prev" id="printBtn" style="margin-left: 20px; padding: 20px 40px; font-size: 1.2rem;">
+                        <i class="fas fa-print"></i>
+                        IMPRIMER
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // =============================================
+        // VARIABLES GLOBALES
+        // =============================================
+        let currentStep = 1;
+        const totalSteps = 5;
+        const userData = {};
+        const circumference = 2 * Math.PI * 54;
+        let radarChart = null;
+        
+        // =============================================
+        // FONCTIONS PRINCIPALES
+        // =============================================
+        
+        // 1. Initialiser le graphique radar
+        function initRadarChart() {
+            const ctx = document.getElementById('radarChart');
+            if (!ctx) {
+                console.error("Canvas radarChart non trouvé!");
+                return null;
+            }
+            
+            return new Chart(ctx.getContext('2d'), {
+                type: 'radar',
+                data: {
+                    labels: ['Force', 'Endurance', 'Flexibilité', 'Précision', 'Récupération'],
+                    datasets: [{
+                        label: 'Votre profil',
+                        data: [30, 30, 30, 30, 30],
+                        backgroundColor: 'rgba(0, 243, 255, 0.2)',
+                        borderColor: '#00f3ff',
+                        pointBackgroundColor: '#00f3ff',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#00f3ff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                display: false,
+                                stepSize: 20
+                            },
+                            grid: {
+                                color: 'rgba(0, 243, 255, 0.1)'
+                            },
+                            angleLines: {
+                                color: 'rgba(0, 243, 255, 0.1)'
+                            },
+                            pointLabels: {
+                                color: '#00f3ff',
+                                font: {
+                                    family: 'Exo 2',
+                                    size: 11,
+                                    weight: '500'
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 2. Mettre à jour la progression
+        function updateProgress() {
+            const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            const offset = circumference - (progress / 100) * circumference;
+            
+            // Cercle de progression
+            const circle = document.querySelector('.progress-ring-circle');
+            if (circle) {
+                circle.style.strokeDashoffset = offset;
+            }
+            
+            // Texte de progression
+            const progressText = document.getElementById('progressText');
+            if (progressText) {
+                progressText.textContent = `${Math.round(progress)}%`;
+            }
+            
+            // Ligne de progression
+            const stepLineProgress = document.getElementById('stepLineProgress');
+            if (stepLineProgress) {
+                stepLineProgress.style.width = `${progress}%`;
+            }
+            
+            // Points d'étape
+            document.querySelectorAll('.step-dot').forEach((dot, index) => {
+                const stepNum = index + 1;
+                
+                dot.classList.toggle('active', stepNum === currentStep);
+                dot.classList.toggle('completed', stepNum < currentStep);
+            });
+            
+            // Boutons de navigation
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            if (prevBtn) {
+                prevBtn.disabled = currentStep === 1;
+            }
+            
+            if (nextBtn) {
+                nextBtn.style.display = currentStep < totalSteps ? 'flex' : 'none';
+            }
+            
+            if (submitBtn) {
+                submitBtn.style.display = currentStep === totalSteps ? 'flex' : 'none';
+            }
+            
+            // Visualisation des données
+            const dataVisual = document.getElementById('dataVisual');
+            if (dataVisual) {
+                dataVisual.classList.toggle('active', currentStep >= 2);
+            }
+            
+            console.log(`Étape ${currentStep}/${totalSteps} - Progression: ${progress}%`);
+        }
+        
+        // 3. Changer d'étape
+        function goToStep(step) {
+            if (step < 1 || step > totalSteps) {
+                console.error(`Étape ${step} invalide!`);
+                return;
+            }
+            
+            console.log(`Changement d'étape: ${currentStep} → ${step}`);
+            
+            // Masquer toutes les cartes
+            document.querySelectorAll('.question-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Afficher la carte active
+            const currentCard = document.querySelector(`.question-card[data-step="${step}"]`);
+            if (currentCard) {
+                currentCard.classList.add('active');
+                console.log(`Carte étape ${step} affichée`);
+            } else {
+                console.error(`Carte étape ${step} non trouvée!`);
+            }
+            
+            currentStep = step;
+            updateProgress();
+            updateRadarChart();
+            
+            // Scroll vers le haut
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // 4. Aller à l'étape suivante
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                const currentCard = document.querySelector(`.question-card[data-step="${currentStep}"]`);
+                if (!currentCard) {
+                    console.error(`Carte étape ${currentStep} non trouvée!`);
+                    return;
+                }
+                
+                const selectedOption = currentCard.querySelector('.cyber-option.selected');
+                if (!selectedOption) {
+                    alert('Veuillez sélectionner une option avant de continuer.');
+                    return;
+                }
+                
+                goToStep(currentStep + 1);
+            }
+        }
+        
+        // 5. Aller à l'étape précédente
+        function prevStep() {
+            if (currentStep > 1) {
+                goToStep(currentStep - 1);
+            }
+        }
+        
+        // 6. Mettre à jour le graphique radar
+        function updateRadarChart() {
+            if (!radarChart) {
+                console.error("Radar chart non initialisé!");
+                return;
+            }
+            
+            const scores = {
+                'energy_type': { 
+                    explosif: [80, 40, 30, 70, 50], 
+                    endurant: [40, 90, 60, 40, 70], 
+                    rythmique: [60, 70, 80, 60, 80], 
+                    adaptatif: [70, 70, 70, 70, 70] 
+                },
+                'body_type': { 
+                    mesomorphe: [90, 60, 40, 50, 50], 
+                    ectomorphe: [40, 90, 80, 60, 70], 
+                    endomorphe: [80, 50, 30, 60, 40], 
+                    mixte: [70, 70, 70, 70, 70] 
+                },
+                'focus_mode': { 
+                    focalise: [60, 50, 30, 90, 40], 
+                    diffus: [40, 60, 70, 40, 80], 
+                    rythmique: [50, 70, 80, 60, 90], 
+                    intuitif: [70, 60, 60, 70, 70] 
+                },
+                'primary_goal': { 
+                    performance: [90, 80, 40, 80, 30], 
+                    sante: [60, 70, 80, 50, 90], 
+                    esthetique: [70, 60, 70, 60, 60], 
+                    plaisir: [50, 60, 80, 40, 90] 
+                },
+                'tech_level': { 
+                    connecte: [70, 80, 50, 90, 60], 
+                    analogique: [60, 70, 80, 40, 90], 
+                    hybride: [70, 75, 70, 70, 80], 
+                    experimental: [80, 70, 60, 90, 60] 
+                }
+            };
+            
+            let finalScores = [50, 50, 50, 50, 50];
+            
+            Object.keys(userData).forEach(key => {
+                if (scores[key] && scores[key][userData[key]]) {
+                    const stepScores = scores[key][userData[key]];
+                    console.log(`Score pour ${key}=${userData[key]}:`, stepScores);
+                    
+                    finalScores = finalScores.map((score, index) => 
+                        Math.min(100, Math.round((score + stepScores[index]) / 2))
+                    );
+                }
+            });
+            
+            console.log('Scores finaux:', finalScores);
+            radarChart.data.datasets[0].data = finalScores;
+            radarChart.update();
+            
+            // Mettre à jour les conseils IA
+            updateAIChat(finalScores);
+        }
+        
+        // 7. Mettre à jour le chat IA
+        function updateAIChat(scores) {
+            const aiChat = document.getElementById('aiChat');
+            if (!aiChat) return;
+            
+            let advice = "";
+            const maxScore = Math.max(...scores);
+            
+            if (maxScore >= 80) {
+                advice = "💪 <strong>Force exceptionnelle!</strong> Vous avez un potentiel remarquable.";
+            } else if (maxScore >= 70) {
+                advice = "🎯 <strong>Profil équilibré!</strong> Excellente base pour tous les sports.";
+            } else if (maxScore >= 60) {
+                advice = "🚀 <strong>Bon potentiel!</strong> Concentrez-vous sur vos points forts.";
+            } else {
+                advice = "📈 <strong>Place à l'amélioration!</strong> Travaillez vos points faibles.";
+            }
+            
+            // Ajouter un nouveau message
+            const newMessage = document.createElement('div');
+            newMessage.className = 'ai-message';
+            newMessage.innerHTML = advice;
+            
+            // Garder seulement 4 messages maximum
+            const messages = aiChat.querySelectorAll('.ai-message');
+            if (messages.length >= 5) {
+                messages[3].remove(); // Enlever l'avant-dernier message
+            }
+            
+            // Ajouter le nouveau message
+            aiChat.appendChild(newMessage);
+        }
+        
+        // 8. Configurer la sélection des options
+        function setupOptionSelection() {
+            document.addEventListener('click', function(event) {
+                const option = event.target.closest('.cyber-option');
+                if (!option) return;
+                
+                const card = option.closest('.question-card');
+                if (!card) return;
+                
+                const step = parseInt(card.dataset.step);
+                const value = option.dataset.value;
+                
+                console.log(`Option sélectionnée: étape ${step}, valeur: ${value}`);
+                
+                // Désélectionner toutes les options de cette carte
+                card.querySelectorAll('.cyber-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Sélectionner l'option cliquée
+                option.classList.add('selected');
+                
+                // Sauvegarder la réponse
+                let dataKey = '';
+                switch(step) {
+                    case 1: dataKey = 'energy_type'; break;
+                    case 2: dataKey = 'body_type'; break;
+                    case 3: dataKey = 'focus_mode'; break;
+                    case 4: dataKey = 'primary_goal'; break;
+                    case 5: dataKey = 'tech_level'; break;
+                    default: 
+                        console.error(`Étape ${step} non reconnue!`);
+                        return;
+                }
+                
+                userData[dataKey] = value;
+                console.log(`Donnée sauvegardée: ${dataKey} = ${value}`);
+                
+                // Mettre à jour le champ caché
+                const inputField = card.querySelector('input[type="hidden"]');
+                if (inputField) {
+                    inputField.value = value;
+                    console.log(`Champ caché ${inputField.id} mis à jour: ${value}`);
+                }
+                
+                // Mettre à jour le graphique
+                updateRadarChart();
+            });
+        }
+        
+        // 9. Assistant IA
+        function setupAIAssistant() {
+            const aiAssistant = document.getElementById('aiAssistant');
+            const aiChat = document.getElementById('aiChat');
+            
+            if (aiAssistant && aiChat) {
+                aiAssistant.addEventListener('click', function() {
+                    aiChat.classList.toggle('active');
+                    console.log('Chat IA', aiChat.classList.contains('active') ? 'ouvert' : 'fermé');
+                });
+                
+                // Fermer le chat en cliquant en dehors
+                document.addEventListener('click', function(event) {
+                    if (!aiAssistant.contains(event.target) && !aiChat.contains(event.target)) {
+                        aiChat.classList.remove('active');
+                    }
+                });
+            } else {
+                console.error('Éléments IA non trouvés!');
+            }
+        }
+        
+        // 10. Créer des particules
+        function createParticles() {
+            const particleField = document.getElementById('particleField');
+            if (!particleField) {
+                console.error('Champ de particules non trouvé!');
+                return;
+            }
+            
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: absolute;
+                    width: ${Math.random() * 3 + 1}px;
+                    height: ${Math.random() * 3 + 1}px;
+                    background: ${i % 3 === 0 ? 'var(--cyber-blue)' : 
+                                 i % 3 === 1 ? 'var(--cyber-pink)' : 'var(--cyber-green)'};
+                    border-radius: 50%;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    opacity: ${Math.random() * 0.5 + 0.2};
+                    animation: float ${Math.random() * 10 + 10}s linear infinite;
+                    animation-delay: ${Math.random() * 5}s;
+                `;
+                particleField.appendChild(particle);
+            }
+            
+            // Ajouter l'animation float
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes float {
+                    0% { transform: translate(0, 0) rotate(0deg); }
+                    100% { transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(360deg); }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            console.log('Particules créées avec succès');
+        }
+        
+        // 11. ROUTEUR SIMPLE
+        function navigateTo(path) {
+            console.log(`Navigation vers: ${path}`);
+            
+            // Gérer l'historique du navigateur
+            window.history.pushState({ path: path }, '', path);
+            
+            // Afficher/masquer les pages selon la route
+            const mainPage = document.getElementById('mainPage');
+            const resultsPage = document.getElementById('resultsPage');
+            
+            if (path === '/results') {
+                // Afficher la page des résultats
+                mainPage.style.display = 'none';
+                resultsPage.classList.add('active');
+                
+                // Remplir les résultats avec les données
+                fillResults();
+                
+                // Scroll vers le haut
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                // Afficher la page principale
+                mainPage.style.display = 'block';
+                resultsPage.classList.remove('active');
+                
+                // Scroll vers le haut
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+        
+        // 12. Remplir les résultats
+        function fillResults() {
+            // Déterminer le profil
+            let profileType = "NEURO-SPORTIF";
+            let sport = "ENTRAÎNEMENT PERSONNALISÉ";
+            let sportDesc = "Programme adapté à votre profil unique";
+            
+            if (userData.energy_type === 'explosif' && userData.body_type === 'mesomorphe') {
+                profileType = "PUISSANCE EXPLOSIVE";
+                sport = "SQUAT & FORCE";
+                sportDesc = "Parfait pour développer votre puissance naturelle et votre force explosive. Programme orienté vers la force maximale.";
+            } else if (userData.energy_type === 'endurant' && userData.body_type === 'ectomorphe') {
+                profileType = "ENDURANCE LONGUE";
+                sport = "COURSE À PIED";
+                sportDesc = "Idéal pour votre métabolisme rapide et votre excellente endurance naturelle. Programme d'endurance et de régularité.";
+            } else if (userData.energy_type === 'rythmique') {
+                profileType = "RYTHME HARMONIEUX";
+                sport = "YOGA & DANSE";
+                sportDesc = "Parfait pour votre connexion corps-esprit et votre sens du rythme. Programme équilibré et fluide.";
+            }
+            
+            // Mettre à jour les éléments HTML
+            document.getElementById('resultProfileBadge').textContent = profileType;
+            document.getElementById('resultEnergy').textContent = userData.energy_type?.toUpperCase() || 'EXPLOSIF';
+            document.getElementById('resultBody').textContent = userData.body_type?.toUpperCase() || 'MÉSOMORPHE';
+            document.getElementById('resultFocus').textContent = userData.focus_mode?.toUpperCase() || 'FOCALISÉ';
+            document.getElementById('resultSport').textContent = sport;
+            document.getElementById('resultSportDesc').textContent = sportDesc;
+        }
+        
+        // 13. Soumettre le formulaire
+        function submitForm() {
+            console.log("🚀 Soumission du formulaire...");
+            
+            // Vérifier que toutes les questions sont répondues
+            const allCards = document.querySelectorAll('.question-card');
+            let missingAnswers = [];
+            
+            allCards.forEach(card => {
+                const step = parseInt(card.dataset.step);
+                const hasSelection = card.querySelector('.cyber-option.selected');
+                if (!hasSelection) {
+                    missingAnswers.push(step);
+                }
+            });
+            
+            if (missingAnswers.length > 0) {
+                alert(`⚠️ Veuillez répondre aux questions suivantes :\nÉtapes ${missingAnswers.join(', ')}`);
+                goToStep(missingAnswers[0]);
+                return false;
+            }
+            
+            // Afficher l'animation de complétion
+            const completionAnimation = document.getElementById('completionAnimation');
+            if (completionAnimation) {
+                completionAnimation.classList.add('active');
+                
+                // Créer plus de confettis
+                for (let i = 0; i < 30; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = `${Math.random() * 100}%`;
+                    confetti.style.animationDelay = `${Math.random() * 2}s`;
+                    confetti.style.backgroundColor = i % 3 === 0 ? 'var(--cyber-blue)' : 
+                                                     i % 3 === 1 ? 'var(--cyber-pink)' : 'var(--cyber-green)';
+                    confetti.style.width = `${Math.random() * 8 + 4}px`;
+                    confetti.style.height = confetti.style.width;
+                    completionAnimation.appendChild(confetti);
+                }
+                
+                // Après 3 secondes, naviguer vers /results
+                setTimeout(() => {
+                    completionAnimation.classList.remove('active');
+                    navigateTo('/results');
+                }, 3000);
+            }
+            
+            return false;
+        }
+        
+        // 14. Navigation par points d'étape
+        function setupStepNavigation() {
+            document.querySelectorAll('.step-dot').forEach(dot => {
+                dot.addEventListener('click', function() {
+                    const step = parseInt(this.dataset.step);
+                    if (step <= currentStep) {
+                        console.log(`Navigation vers étape ${step} via point d'étape`);
+                        goToStep(step);
+                    }
+                });
+            });
+        }
+        
+        // 15. Vérifier que toutes les cartes sont présentes
+        function verifyCards() {
+            for (let i = 1; i <= totalSteps; i++) {
+                const card = document.querySelector(`.question-card[data-step="${i}"]`);
+                if (!card) {
+                    console.error(`Carte étape ${i} manquante!`);
+                    return false;
+                }
+                console.log(`Carte étape ${i}: OK`);
+            }
+            return true;
+        }
+        
+        // 16. Initialiser l'application
+        function initApp() {
+            console.log('🚀 Initialisation du Profilage Neuro-Sportif...');
+            
+            // Vérifier les cartes
+            if (!verifyCards()) {
+                alert('Erreur: certaines cartes de questions sont manquantes!');
+                return;
+            }
+            
+            // Initialiser le graphique radar
+            radarChart = initRadarChart();
+            if (!radarChart) {
+                console.error('Échec de l\'initialisation du graphique radar');
+            } else {
+                console.log('✅ Graphique radar initialisé');
+            }
+            
+            // Configurer le bouton de soumission
+            const submitBtn = document.getElementById('submitBtn');
+            if (submitBtn) {
+                submitBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('🖱️ Bouton "Analyser mon profil" cliqué');
+                    submitForm();
+                });
+                console.log('✅ Bouton "Analyser mon profil" configuré');
+            } else {
+                console.error('❌ Bouton "Analyser mon profil" non trouvé!');
+            }
+            
+            // Configurer les boutons de navigation
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            if (prevBtn) {
+                prevBtn.addEventListener('click', prevStep);
+                console.log('✅ Bouton "Précédent" configuré');
+            }
+            
+            if (nextBtn) {
+                nextBtn.addEventListener('click', nextStep);
+                console.log('✅ Bouton "Suivant" configuré');
+            }
+            
+            // Configurer la sélection des options
+            setupOptionSelection();
+            console.log('✅ Sélection des options configurée');
+            
+            // Configurer l'assistant IA
+            setupAIAssistant();
+            console.log('✅ Assistant IA configuré');
+            
+            // Configurer la navigation par points
+            setupStepNavigation();
+            console.log('✅ Navigation par points configurée');
+            
+            // Créer des particules
+            createParticles();
+            console.log('✅ Effets de particules créés');
+            
+            // Configurer le bouton de résultats dans l'animation
+            const resultsBtn = document.getElementById('resultsBtn');
+            if (resultsBtn) {
+                resultsBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    submitForm();
+                });
+            }
+            
+            // Configurer le bouton "Nouveau profil"
+            const newProfileBtn = document.getElementById('newProfileBtn');
+            if (newProfileBtn) {
+                newProfileBtn.addEventListener('click', function() {
+                    navigateTo('/');
+                });
+            }
+            
+            // Configurer le bouton "Imprimer"
+            const printBtn = document.getElementById('printBtn');
+            if (printBtn) {
+                printBtn.addEventListener('click', function() {
+                    window.print();
+                });
+            }
+            
+            // Gérer le bouton retour du navigateur
+            window.addEventListener('popstate', function(event) {
+                if (event.state && event.state.path) {
+                    navigateTo(event.state.path);
+                } else {
+                    navigateTo('/');
+                }
+            });
+            
+            // Mettre à jour la progression initiale
+            updateProgress();
+            console.log('✅ Progression initiale mise à jour');
+            
+            // Animation d'entrée
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+                document.body.style.transition = 'opacity 0.5s ease-in';
+                console.log('✅ Animation d\'entrée terminée');
+            }, 100);
+            
+            console.log('🎯 Application prête!');
+            console.log('📊 Données utilisateur actuelles:', userData);
+        }
+        
+        // =============================================
+        // DÉMARRAGE DE L'APPLICATION
+        // =============================================
+        document.addEventListener('DOMContentLoaded', initApp);
+        
+        // Gestion des erreurs
+        window.addEventListener('error', function(e) {
+            console.error('❌ Erreur JavaScript:', e.error);
+            console.error('Fichier:', e.filename);
+            console.error('Ligne:', e.lineno);
+            console.error('Colonne:', e.colno);
+        });
+    </script>
+</body>
+</html>
